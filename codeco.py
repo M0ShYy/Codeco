@@ -7,7 +7,7 @@ def code_alphanumeric(text):
     for i in range(len(text)):
         for j in range(len(alphabet)):
             if text[i] == alphabet[j]:
-                a = j+1
+                a = j + 1
                 code.append(str(a))
     return code
 
@@ -17,7 +17,7 @@ def decode_alphanumeric(code):
     if type(code) != type([]):
         code = code.split()
     for i in code:
-        i = int(i)-1
+        i = int(i) - 1
         text = text + alphabet[i]
     return text
 
@@ -26,7 +26,7 @@ def code_caesar(text):
     code = []
     text = code_alphanumeric(text)
     for i in range(len(text)):
-        code.append((int(text[i])+3) % 26)
+        code.append((int(text[i]) + 3) % 26)
     code = decode_alphanumeric(code)
     return code
 
@@ -50,7 +50,7 @@ def code_keyed(text, key):
     return code
 
 
-def decode_keyed(code,key):
+def decode_keyed(code, key):
     text = []
     code = code_alphanumeric(code)
     key = code_alphanumeric(key)
