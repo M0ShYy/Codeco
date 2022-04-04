@@ -2,21 +2,21 @@ alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 
 def code_alphanumeric(text):
-    code = []
+    code = ""
     text = str(text)
     for i in range(len(text)):
         for j in range(len(alphabet)):
             if text[i] == alphabet[j]:
                 a = j + 1
-                code.append(str(a))
-    return code
+                code= code+ "," +str(a)
+    return code[1:]
 
 
 def decode_alphanumeric(code):
     text = ""
-    # if type(code) != type([]):
+    #if type(code) != type([]):
     if not isinstance(code, list):
-        code = code.split()
+        code = code.split(",")
     for i in code:
         i = int(i) - 1
         text = text + alphabet[i]
