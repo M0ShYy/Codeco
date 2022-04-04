@@ -14,7 +14,8 @@ def code_alphanumeric(text):
 
 def decode_alphanumeric(code):
     text = ""
-    if type(code) != type([]):
+    # if type(code) != type([]):
+    if not isinstance(code, list):
         code = code.split()
     for i in code:
         i = int(i) - 1
@@ -115,8 +116,8 @@ def decode_ascii_key(code, key):
     text = text.split()
     for i in range(len(text)):
         if int(text[i], 16) < test:
-            text[i] = "0"+text[i]
+            text[i] = "0" + text[i]
     for i in text:
-        final = final + " "+i
+        final = final + " " + i
     final = decode_ascii(final)
     return final

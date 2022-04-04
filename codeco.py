@@ -3,7 +3,7 @@ import sys
 import getopt
 
 """from timeit import default_timer as timer"""
-global info
+global info, encode, decode, text, method
 # Options
 options = "hedm:i:"
 # Long options
@@ -57,7 +57,24 @@ def main(argumentlist):
                 text = currentValue  #
         if not info:  # if the help was not printed then
             if encode != decode:
-                print('commenceon le script avec: ' + method + " pour : " + text)
+                if method == "alphanumeric":
+                    print("methode alphanumeric")
+                elif method == "caesar":
+                    if encode:
+                        print('coded text: ' + code_caesar(text))
+                    elif decode:
+                        print('decoded text: ' + decode_caesar(text))
+                elif method == "keyed":
+                    print("methode keyed")
+                elif method == "ascii":
+                    if encode:
+                        print('coded text: ' + code_ascii(text))
+                    elif decode:
+                        print('decoded text: ' + decode_ascii(text))
+                elif method == "ascii_key":
+                    print("methode ascii with key")
+                else:
+                    print("methode non trouvé")
             else:
                 print("You can't have decode and encode ON")
     except getopt.error as err:  # if there is an error
@@ -67,11 +84,11 @@ def main(argumentlist):
         sys.exit()
 
 
-# argumentList = (sys.argv[1:])                               # make a list of all the option wrote by the user
-# main(argumentList)
+argumentList = (sys.argv[1:])                               # make a list of all the option wrote by the user
+main(argumentList)
 
-if __name__ == '__main__':
-    argument = " -d -m hexa -i test"
+"""if __name__ == '__main__':
+    argument = " -d -m ascii -i test"
     argumentList = (argument.split())
     print(argumentList)
-    main(argumentList)
+    main(argumentList)"""
