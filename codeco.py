@@ -20,7 +20,7 @@ def infos():
             "OPTION\n"
             "-h   --help      <Show this page>\n"
             "-a   --action    <encode/decode>      \n"
-            "-m   --methode   <methode of decode/encode>\n"
+            "-m   --methode   <methode of decode/encode>(ascii_key, ascii, keyed, alphanumeric, caesar)\n"
             "-i   --input     <the secret or the code>\n"
             "-k   --key       <key if necessary>\n"
             "\n"
@@ -99,7 +99,7 @@ def main(argumentlist):
 """argumentList = (sys.argv[1:])                               # make a list of all the option wrote by the user
 main(argumentList)"""
 if __name__ == '__main__':
-    argument = " -a encode -m alphanumeric -i test"
+    argument = " -h"
     argumentList = (argument.split())
     print(argumentList)
     main(argumentList)
