@@ -60,8 +60,63 @@ def decode_keyed(code, key):
     return text
 
 
-secret = "my secret"
-clef = 'my key'
-print(decode_alphanumeric(code_alphanumeric(secret)))
-print(decode_caesar(code_caesar(secret)))
-print(decode_keyed(code_keyed(secret, clef), clef))
+def code_ascii(text):
+    code = ""
+    for i in text:
+        code = code + " " + format(ord(str(i)), "x")
+    return code
+
+
+def decode_ascii(code):
+    text = ""
+    code = code.split()
+    for i in code:
+        text = text + i + ' '
+    text = bytearray.fromhex(text)
+    text = text.decode()
+    return text
+
+
+def code_ascii_key(text, key):
+    code = ""
+    final = ''
+    asc_secret = code_ascii(text)
+    asc_key = code_ascii(key)
+    asc_key = asc_key.split()
+    asc_secret = asc_secret.split()
+    for i in range(len(asc_secret)):
+        add = hex((int(asc_secret[i], 16) + int(asc_key[i % len(asc_key)], 16)) % int("7f", 16))
+        code = code + " " + add[2:]
+    test = int("10", 16)
+    code = str(code)
+    code = code.split()
+    for i in range(len(code)):
+        if int(code[i], 16) < test:
+            code[i] = "0" + code[i]
+    for i in code:
+        final = final + " " + i
+
+    final = decode_ascii(final)
+    return final
+
+
+def decode_ascii_key(code, key):
+    text = ""
+    final = ''
+    asc_secret = code_ascii(code)
+    asc_key = code_ascii(key)
+    asc_key = asc_key.split()
+    asc_secret = asc_secret.split()
+    for i in range(len(asc_secret)):
+        add = hex((int(asc_secret[i], 16) - int(asc_key[i % len(asc_key)], 16)) % int("7f", 16))
+        text = text + " " + add[2:]
+    test = int("10", 16)
+    text = str(text)
+    text = text.split()
+    for i in range(len(text)):
+        if int(text[i], 16) < test:
+            text[i] = "0"+text[i]
+    for i in text:
+        final = final + " "+i
+    final = decode_ascii(final)
+    return final
