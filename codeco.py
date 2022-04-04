@@ -1,122 +1,77 @@
-alphabet = "abcdefghijklmnopqrstuvwxyz"
+from fonctions import *
+import sys
+import getopt
+
+"""from timeit import default_timer as timer"""
+global info
+# Options
+options = "hedm:i:"
+# Long options
+long_options = ["help", "encode", "decode", "methode =", "input ="]
 
 
-def code_alphanumeric(text):
-    code = []
-    text = str(text)
-    for i in range(len(text)):
-        for j in range(len(alphabet)):
-            if text[i] == alphabet[j]:
-                a = j + 1
-                code.append(str(a))
-    return code
+# list of the characters available
 
 
-def decode_alphanumeric(code):
-    text = ""
-    if type(code) != type([]):
-        code = code.split()
-    for i in code:
-        i = int(i) - 1
-        text = text + alphabet[i]
-    return text
+def infos():
+    global info
+    info = True
+    return ("codeco.py\n"
+            "OPTION\n"
+            "-h   --help      <Show this page>\n"
+            "-e   --encode    <if you want to encode>   \n"
+            "-d   --decode    <if you want to encode>       \n"
+            "-m   --methode   <methode of decode/encode>\n"
+            "-i   --input     <the secret or the code>\n"
+            "\n"
+            "\n"
+            "EXAMPLES:\n"
+            "codeco.py -e -m caesar -i secret\n"
+            "codeco.py -h\n"
+            "\n"
+            "SEE THE MAN PAGE https://github.com/M0ShYy/Codeco FOR MORE OPTIONS AND EXAMPLES\n")
 
 
-def code_caesar(text):
-    code = []
-    text = code_alphanumeric(text)
-    for i in range(len(text)):
-        code.append((int(text[i]) + 3) % 26)
-    code = decode_alphanumeric(code)
-    return code
+def main(argumentlist):
+    global info, encode, decode, text, method
+    info = False
+    encode = False
+    decode = False
+    try:
+        arguments, values = getopt.getopt(argumentlist, options, long_options)
+
+        for currentArgument, currentValue in arguments:
+
+            if currentArgument in ("-h", "--help"):  # test if there is -h or --help
+                print(infos())  # print help
+
+            elif currentArgument in ("-e", "--encode "):  # test if there is -e or --encode
+                encode = True
+
+            elif currentArgument in ("-d", "--decode "):  # test if there is -d or --decode
+                decode = True
+
+            elif currentArgument in ("-m", "--method "):  # test if there is -m --method
+                method = currentValue  #
+            elif currentArgument in ("-i", "--input "):  # test if there is -i or --input
+                text = currentValue  #
+        if not info:  # if the help was not printed then
+            if encode != decode:
+                print('commenceon le script avec: ' + method + " pour : " + text)
+            else:
+                print("You can't have decode and encode ON")
+    except getopt.error as err:  # if there is an error
+        # output error, and return with an error code
+        print(str(err))  # print it
+        infos()  # and print the help
+        sys.exit()
 
 
-def decode_caesar(code):
-    text = []
-    code = code_alphanumeric(code)
-    for i in range(len(code)):
-        text.append((int(code[i]) - 3) % 26)
-    text = decode_alphanumeric(text)
-    return text
+# argumentList = (sys.argv[1:])                               # make a list of all the option wrote by the user
+# main(argumentList)
 
-
-def code_keyed(text, key):
-    code = []
-    text = code_alphanumeric(text)
-    key = code_alphanumeric(key)
-    for i in range(len(text)):
-        code.append((int(text[i]) + int((key[i % len(key)]))) % 26)
-    code = decode_alphanumeric(code)
-    return code
-
-
-def decode_keyed(code, key):
-    text = []
-    code = code_alphanumeric(code)
-    key = code_alphanumeric(key)
-    for i in range(len(code)):
-        text.append((int(code[i]) - int((key[i % len(key)]))) % 26)
-    text = decode_alphanumeric(text)
-    return text
-
-
-def code_ascii(text):
-    code = ""
-    for i in text:
-        code = code + " " + format(ord(str(i)), "x")
-    return code
-
-
-def decode_ascii(code):
-    text = ""
-    code = code.split()
-    for i in code:
-        text = text + i + ' '
-    text = bytearray.fromhex(text)
-    text = text.decode()
-    return text
-
-
-def code_ascii_key(text, key):
-    code = ""
-    final = ''
-    asc_secret = code_ascii(text)
-    asc_key = code_ascii(key)
-    asc_key = asc_key.split()
-    asc_secret = asc_secret.split()
-    for i in range(len(asc_secret)):
-        add = hex((int(asc_secret[i], 16) + int(asc_key[i % len(asc_key)], 16)) % int("7f", 16))
-        code = code + " " + add[2:]
-    test = int("10", 16)
-    code = str(code)
-    code = code.split()
-    for i in range(len(code)):
-        if int(code[i], 16) < test:
-            code[i] = "0" + code[i]
-    for i in code:
-        final = final + " " + i
-
-    final = decode_ascii(final)
-    return final
-
-
-def decode_ascii_key(code, key):
-    text = ""
-    final = ''
-    asc_secret = code_ascii(code)
-    asc_key = code_ascii(key)
-    asc_key = asc_key.split()
-    asc_secret = asc_secret.split()
-    for i in range(len(asc_secret)):
-        add = hex((int(asc_secret[i], 16) - int(asc_key[i % len(asc_key)], 16)) % int("7f", 16))
-        text = text + " " + add[2:]
-    test = int("10", 16)
-    text = str(text)
-    text = text.split()
-    for i in range(len(text)):
-        if int(text[i], 16) < test:
-            text[i] = "0"+text[i]
-    for i in text:
-        final = final + " "+i
-    final = decode_ascii(final)
-    return final
+if __name__ == '__main__':
+    argument = " -d -m hexa -i test"
+    argumentList = (argument.split())
+    print(argumentList)
+    main(argumentList)
