@@ -1,9 +1,8 @@
 from fonctions import *
 import sys
 import getopt
-
-"""from timeit import default_timer as timer"""
 global info, encode, decode, text, method, key
+
 # Options
 options = "ha:m:i:k:"
 # Long options
@@ -37,11 +36,10 @@ def main(argumentlist):
     info = False
     try:
         arguments, values = getopt.getopt(argumentlist, options, long_options)
-
         for currentArgument, currentValue in arguments:
-
-            if currentArgument in ("-h", "--help"):  # test if there is -h or --help
+            if currentArgument in ("-h", "--help") or len(arguments) == "0":  # test if there is -h or --help
                 print(infos())  # print help
+                print(len(arguments))
 
             elif currentArgument in ("-a", "--action "):  # test if there is -a or --action
                 if currentValue == "encode":
@@ -92,7 +90,7 @@ def main(argumentlist):
     except getopt.error as err:  # if there is an error
         # output error, and return with an error code
         print(str(err))  # print it
-        infos()  # and print the help
+        print(infos())  # and print the help
         sys.exit()
 
 
